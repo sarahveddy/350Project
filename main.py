@@ -12,15 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import webapp2 
+from jinja2 import Environment, FileSystemLoader
 
-
-class MainPage(webapp2.RequestHandler):
+class BaseHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write('ASS!')
+        self.render_response("templates/static.html")
+
+    def render_response(self, template):
+        env = Environment(
+            loader = FileSystemLoader(os.path.dirname(__file__)),
+            extensions = ['jinja2.ext.autoescape'],
+            autoescape = True
+        )
+        template = env.get_template(template)
+        self.response.headers['Content-Type'] = 'text/html'
+        self.response.write(template.render())
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
-], debug=True)
+    ('/', BaseHandler),
+], debug = True)
