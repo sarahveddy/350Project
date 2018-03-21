@@ -20,7 +20,7 @@ class BaseHandler(webapp2.RequestHandler):
     def get(self):
         self.render_response("templates/static.html")
 
-    def render_response(self, template):
+    def render_response(self, template, **kwargs):
         env = Environment(
             loader = FileSystemLoader(os.path.dirname(__file__)),
             extensions = ['jinja2.ext.autoescape'],
@@ -28,9 +28,14 @@ class BaseHandler(webapp2.RequestHandler):
         )
         template = env.get_template(template)
         self.response.headers['Content-Type'] = 'text/html'
-        self.response.write(template.render())
+        self.response.write(template.render(kwargs))
+
+class AboutHandler(BaseHandler):
+    def get(self):
+        self.render_response("templates/about.html", page_title = "About")
+
 
 
 app = webapp2.WSGIApplication([
-    ('/', BaseHandler),
+    ('/', BaseHandler), ('/about', AboutHandler)
 ], debug = True)
