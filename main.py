@@ -15,6 +15,7 @@
 import os
 import webapp2 
 from jinja2 import Environment, FileSystemLoader
+from python.dog_sighting import DogSighting
 
 class BaseHandler(webapp2.RequestHandler):
     def get(self):
@@ -38,9 +39,20 @@ class FormHandler(BaseHandler):
     def get(self):
         self.render_response("templates/form.html", page_title="Form")
     def post(self):
+        dog = DogSighting.new(None,
+                              None,
+                              self.request.get("dog_pic"),
+                              self.request.get("dog_breed"),
+                              None,
+                              None,
+                              None,
+                              None)
         self.render_response("templates/form.html", page_title=self.request.get("title", ""))
 
 
+
 app = webapp2.WSGIApplication([
-    ('/', BaseHandler), ('/about', AboutHandler), ('/form', FormHandler)
+    ('/', BaseHandler),
+    ('/about', AboutHandler),
+    ('/form', FormHandler)
 ], debug = True)
