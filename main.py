@@ -20,7 +20,7 @@ class BaseHandler(webapp2.RequestHandler):
     def get(self):
         self.render_response("templates/static.html")
 
-    def render_response(self, template, **kwargs):
+    def render_response(self, template, **kwargs): #kwarg = keyword argument, could also pass page_title="" as argument
         env = Environment(
             loader = FileSystemLoader(os.path.dirname(__file__)),
             extensions = ['jinja2.ext.autoescape'],
@@ -32,10 +32,15 @@ class BaseHandler(webapp2.RequestHandler):
 
 class AboutHandler(BaseHandler):
     def get(self):
-        self.render_response("templates/about.html", page_title = "About")
+        self.render_response("templates/about.html", page_title="About")
 
+class FormHandler(BaseHandler):
+    def get(self):
+        self.render_response("templates/form.html", page_title="Form")
+    def post(self):
+        self.render_response("templates/form.html", page_title=self.request.get("title", ""))
 
 
 app = webapp2.WSGIApplication([
-    ('/', BaseHandler), ('/about', AboutHandler)
+    ('/', BaseHandler), ('/about', AboutHandler), ('/form', FormHandler)
 ], debug = True)
