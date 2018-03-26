@@ -3,14 +3,22 @@
 {% block content %}
     <h1>Form</h1>
     <form action="/form" method="post">
-        <input type="text" name="title" > title of page </input>
+        <!--<input type="text" name="title" > title of page </input> </!-->
         <input type="text" name="dog_pic">URL of dog pic</input>
+        <br>
+        <h2>Dog Breed</h2>
         <select name="dog_breed">
-            <option>Husky</option>
-            <option>RatDog</option>
+            <option>Pupper</option>
+            <option>Loaf</option>
             <option>GoodBoye</option>
         </select>
+        <br>
+        <h2>Rating</h2>
+        <input type="radio" name="rating" value="Gold">Gold <br>
+        <input type="radio" name="rating" value="Silver">Silver <br>
+        <input type="radio" name="rating" value="Bronze">Bronze <br>
 
+        <br>
         <input type="submit">Submit</input>
     </form>
 {% endblock %}
