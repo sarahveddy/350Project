@@ -1,35 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+
+    <script>
+        function navigateTo(id){
+            var pages = document.getElementsByClassName("page")
+            for(var i = 0; i<pages.length; i++) {
+                pages[i].classList.remove("visible")
+            }
+
+            var visible = document.getElementById(id)
+            visible.classList.add("visible")
+        }
+
+    </script>
     <title>Sarah Vedress | {{page_title}}</title>
     <link rel="stylesheet" href="/css/style.css">
     {% block script %}{% endblock %}
 </head>
+
 <body>
-    <!-- // Intro -->
     <header>
-        <img src="/images/picture.jpg" alt="Sarah Vedress" id="profile_picture">
-        <h1>Dog Sightings</h1>
+        <nav>
+            <div class="nav-wrapper red lighten-2">
+                <a href="#" class="brand-logo">DOG TRACKS</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a onclick="navigateTo('myDogs')">My Dogs</a></li>
+                    <li><a onclick="navigateTo('map')">Dog Map</a></li>
+                    <li><a onclick="navigateTo('profile')">Profile</a></li>
+                </ul>
+            </div>
+        </nav>
     </header>
 
-    <!-- // Section Content -->
-    <main>
-            {% block content %}{% endblock %}
-    </main>
-    <!-- // Footer & contact info -->
-    <footer>
-        <h2>Contact</h2>
 
-        <!-- Social media and contact links. Add or remove any networks. -->
-        <div>
-            <a href="mailto:email@example.com">email@example.com</a>
-            <a href="http://yourwebsite.com" target="_blank">yourwebsite.com</a>
-            <a href="#" target="_blank">Twitter</a>
-            <a href="#" target="_blank">LinkedIn</a>
-            <a href="#" target="_blank">Facebook</a>
+    <main>
+        <div class="page" id="myDogs">
+            {% include 'templates/myDogs.html' %}
         </div>
-    </footer>
+
+        <div class="page" id="map">
+            {% include 'templates/map.html' %}
+        </div>
+
+        <div class="page" id="profile">
+            {% include 'templates/profile.html' %}
+        </div>
+    </main>
+
+    <button data-target="popup" class="btn-floating btn-large waves-effect waves-light red lighten-2 addButton modal-trigger">
+        <i class="material-icons">pets</i>
+    </button>
+    <div id="popup" class="modal">
+       {% include 'templates/modal.html' %}
+
+    </div>
+    <script>
+        var modal = document.querySelector(".modal");
+        M.Modal.init(modal);
+    </script>
+
+
+
 </body>
 </html>

@@ -2,8 +2,25 @@
 /*______________________________*/
 body {
 	background: lightblue;
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
 }
 
-img {
-	height: 100px;
+main {
+	flex: 1 0 auto;
+}
+
+.page {
+	display: none;
+}
+
+.visible {
+	display: block;
+}
+
+.addButton {
+	bottom: 20px;
+	right: 20px;
+	position: absolute;
 }
