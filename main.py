@@ -13,13 +13,20 @@
 # limitations under the License.
 
 import os
-import webapp2 
+import webapp2
+import json
 from jinja2 import Environment, FileSystemLoader
 from python.dog_sighting import DogSighting
 
 class BaseHandler(webapp2.RequestHandler):
     def get(self):
         self.render_response("templates/static.html")
+
+    def post(self):
+        form_data = dict(self.request.POST)
+        print form_data
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(form_data))
 
     def render_response(self, template, **kwargs): #kwarg = keyword argument, could also pass page_title="" as argument
         env = Environment(
@@ -31,28 +38,27 @@ class BaseHandler(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'text/html'
         self.response.write(template.render(kwargs))
 
-class AboutHandler(BaseHandler):
-    def get(self):
-        self.render_response("templates/about.html", page_title="About")
-
-class FormHandler(BaseHandler):
-    def get(self):
-        self.render_response("templates/form.html", page_title="Form")
-    def post(self):
-        dog = DogSighting.new(None,
-                              None,
-                              self.request.get("dog_pic"),
-                              self.request.get("dog_breed"),
-                              None,
-                              None,
-                              None,
-                              None)
-        self.render_response("templates/form.html", page_title=self.request.get("title", ""))
+# class AboutHandler(BaseHandler):
+#     def get(self):
+#         self.render_response("templates/about.html", page_title="About")
+#
+# class FormHandler(BaseHandler):
+#     def get(self):
+#         self.render_response("templates/form.html", page_title="Form")
+#     def post(self):
+#         dog = DogSighting.new(None,
+#                               None,
+#                               self.request.get("dog_pic"),
+#                               self.request.get("dog_breed"),
+#                               None,
+#                               None,
+#                               None,
+#                               None)
+#         self.render_response("templates/form.html", page_title=self.request.get("title", ""))
 
 
 
 app = webapp2.WSGIApplication([
     ('/', BaseHandler),
-    ('/about', AboutHandler),
-    ('/form', FormHandler)
+
 ], debug = True)

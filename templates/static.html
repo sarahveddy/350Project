@@ -8,18 +8,31 @@
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
     <script>
         function navigateTo(id){
-            var pages = document.getElementsByClassName("page")
+            var pages = document.getElementsByClassName("page");
             for(var i = 0; i<pages.length; i++) {
-                pages[i].classList.remove("visible")
+                pages[i].classList.remove("visible");
             }
 
-            var visible = document.getElementById(id)
-            visible.classList.add("visible")
+            var visible = document.getElementById(id);
+            visible.classList.add("visible");
+        }
+
+        function submit(){
+            var formData = $("#dogSubmissionForm").serialize();
+            console.log(formData);
+            $.post("/", formData).done(function(response) {
+                console.log(response);
+            });
+
         }
 
     </script>
@@ -60,11 +73,12 @@
     <button data-target="popup" class="btn-floating btn-large waves-effect waves-light red lighten-2 addButton modal-trigger">
         <i class="material-icons">pets</i>
     </button>
-    <div id="popup" class="modal">
+    <div id="popup" class="modal modal-fixed-footer">
        {% include 'templates/modal.html' %}
 
     </div>
     <script>
+        <!--must run after modal is loaded-->
         var modal = document.querySelector(".modal");
         M.Modal.init(modal);
     </script>

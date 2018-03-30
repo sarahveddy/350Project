@@ -1,80 +1,95 @@
 <div class="modal-content">
 
-    <div class="row">
-        <div class="input-field col s12">
-            <input id="first_name" type="text" class="validate">
-            <label for="first_name">Picture Title</label>
-        </div>
-    </div>
+    <form id="dogSubmissionForm">
 
-
-
-    <div class="row">
-        <div class="input-field col s12">
-            <input type="text" id="autocomplete-input" class="autocomplete">
-            <label for="autocomplete-input">Dog Breed</label>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col s6">
-            <p>
-                <label>
-                    <input name="group1" type="radio" checked />
-                    <span>Tiny</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input name="group1" type="radio" />
-                    <span>Small</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input name="group1" type="radio" />
-                    <span>Medium</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input name="group1" type="radio"  />
-                    <span>Large</span>
-                </label>
-            </p>
-
-        </div>
-
-        <div class="col s6">
-            <p>
-                <label>
-                    <input name="group2" type="radio" checked />
-                    <span>Great Dog</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input name="group2" type="radio" />
-                    <span>Ok Dog</span>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input name="group2" type="radio" />
-                    <span>Bad Dog</span>
-                </label>
-            </p>
-        </div>
-    </div>
-    <div class="row">
-        <form class="col s12">
-            <div class="row">
-                <div class="input-field col s12">
-                    <textarea id="textarea1" class="materialize-textarea"></textarea>
-                    <label for="textarea1">Dog Description</label>
-                </div>
+        <!--PICTURE TITLE-->
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="first_name" type="text" class="validate" name="picture_title">
+                <label for="first_name">Picture Title</label>
             </div>
-        </form>
-    </div>
+        </div>
 
+
+        <!--DOG BREED-->
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="text" id="autocomplete-input" class="autocomplete" name="dog_breed">
+                <label for="autocomplete-input">Dog Breed</label>
+            </div>
+        </div>
+
+
+        <!--Size and Rating-->
+        <div class="row">
+            <div class="col s6">
+                <p>
+                    <label>
+                        <input name="size" value="tiny" type="radio" checked />
+                        <span>Tiny</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="size" value="small" type="radio" />
+                        <span>Small</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="size" value="medium" type="radio" />
+                        <span>Medium</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="size" value="large" type="radio"  />
+                        <span>Large</span>
+                    </label>
+                </p>
+
+            </div>
+
+
+            <!--RATING-->
+            <div class="col s6">
+                <p>
+                    <label>
+                        <input name="rating" value="great" type="radio" checked />
+                        <span>Great Dog</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="rating" value="ok" type="radio" />
+                        <span>Ok Dog</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="rating" value="bad" type="radio" />
+                        <span>Bad Dog</span>
+                    </label>
+                </p>
+            </div>
+        </div>
+
+
+        <!--DESCRIPTION-->
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="textarea1" name="description" class="materialize-textarea"></textarea>
+                        <label for="textarea1">Dog Description</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </form>
+</div>
+
+<div class="modal-footer">
+    <a class="modal-action btn-flat modal-close" onclick="submit()">Submit</a>
 </div>
