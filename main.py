@@ -20,13 +20,18 @@ from python.dog_sighting import DogSighting
 
 class BaseHandler(webapp2.RequestHandler):
     def get(self):
-        self.render_response("templates/static.html")
+        dogs = DogSighting.list_all()
+        self.render_response("templates/static.html", dogs=dogs)
 
     def post(self):
         form_data = dict(self.request.POST)
+        picture = self.request.POST.multi["picture"].file.read()
         print form_data
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(form_data))
+        self.response.write(dict())
+        DogSighting.new(None, None, picture, form_data.get("breed"),
+                        form_data.get("size"), None, form_data.get("description"),
+                        int(form_data.get("rating")))
 
     def render_response(self, template, **kwargs): #kwarg = keyword argument, could also pass page_title="" as argument
         env = Environment(

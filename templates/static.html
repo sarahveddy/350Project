@@ -27,16 +27,31 @@
         }
 
         function submit(){
-            var formData = $("#dogSubmissionForm").serialize();
-            console.log(formData);
-            $.post("/", formData).done(function(response) {
-                console.log(response);
-            });
+
+
+            var form = $("#dogSubmissionForm").serializeArray();
+            var formData = new FormData();
+            var file = document.getElementById("picture").files[0];
+            formData.append("picture", file);
+            for (var i = 0; i<form.length; i++){
+                formData.append(form[i].name, form[i].value)
+            }
+            console.log(formData.values());
+
+            $.ajax({
+                url:"/",
+                type:"post",
+                data:formData,
+                cache:false,
+                contentType:false,
+                processData:false
+            })
+
 
         }
 
     </script>
-    <title>Sarah Vedress | {{page_title}}</title>
+    <title>Dog Tracker | {{page_title}}</title>
     <link rel="stylesheet" href="/css/style.css">
     {% block script %}{% endblock %}
 </head>
@@ -57,7 +72,7 @@
 
 
     <main>
-        <div class="page" id="myDogs">
+        <div class="page visible" id="myDogs">
             {% include 'templates/myDogs.html' %}
         </div>
 

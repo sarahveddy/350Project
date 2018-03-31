@@ -1,6 +1,19 @@
 <div class="modal-content">
 
-    <form id="dogSubmissionForm">
+    <form id="dogSubmissionForm" enctype="multipart/form-data" method="post" action="/">
+
+        <!--PICTURE UPLOAD-->
+        <div class="row">
+            <div class="file-field input-field">
+                <div class="btn">
+                    <span>Upload</span>
+                    <input id="picture" type="file" name="picture" accept="image/*">
+                </div>
+                <div class="file-path-wrapper">
+                    <input  class="file-path validate" type="text" placeholder="Upload picture">
+                </div>
+            </div>
+        </div>
 
         <!--PICTURE TITLE-->
         <div class="row">
@@ -18,32 +31,46 @@
                 <label for="autocomplete-input">Dog Breed</label>
             </div>
         </div>
-
+        <!--<script> $('input.autocomplete').autocomplete({-->
+            <!--data: {-->
+                <!--"Apple": null,-->
+                <!--"Microsoft": null,-->
+                <!--"Google": 'https://placehold.it/250x250'-->
+            <!--},-->
+            <!--limit: 20, // The max amount of results that can be shown at once. Default: Infinity.-->
+            <!--onAutocomplete: function(val) {-->
+                <!--alert(cb);-->
+                <!--// Callback function when value is autcompleted.-->
+            <!--},-->
+            <!--minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.-->
+        <!--});-->
+        <!--</script>-->
 
         <!--Size and Rating-->
         <div class="row">
+             <!--SIZE-->
             <div class="col s6">
                 <p>
                     <label>
-                        <input name="size" value="tiny" type="radio" checked />
+                        <input name="dog_size" value="tiny" type="radio" checked />
                         <span>Tiny</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="size" value="small" type="radio" />
+                        <input name="dog_size" value="small" type="radio" />
                         <span>Small</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="size" value="medium" type="radio" />
+                        <input name="dog_size" value="medium" type="radio" />
                         <span>Medium</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="size" value="large" type="radio"  />
+                        <input name="dog_size" value="large" type="radio"  />
                         <span>Large</span>
                     </label>
                 </p>
@@ -55,20 +82,32 @@
             <div class="col s6">
                 <p>
                     <label>
-                        <input name="rating" value="great" type="radio" checked />
-                        <span>Great Dog</span>
+                        <input name="rating" value="5" type="radio" checked />
+                        <span>5 star</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="rating" value="ok" type="radio" />
-                        <span>Ok Dog</span>
+                        <input name="rating" value="4" type="radio" />
+                        <span>4 star</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="rating" value="bad" type="radio" />
-                        <span>Bad Dog</span>
+                        <input name="rating" value="3" type="radio" />
+                        <span>3 star</span>
+                    </label>
+                </p>
+                 <p>
+                    <label>
+                        <input name="rating" value="2" type="radio" />
+                        <span>2 star</span>
+                    </label>
+                </p>
+                 <p>
+                    <label>
+                        <input name="rating" value="1" type="radio" />
+                        <span>1 star</span>
                     </label>
                 </p>
             </div>
@@ -90,6 +129,7 @@
     </form>
 </div>
 
+<!--Modal footer-->
 <div class="modal-footer">
     <a class="modal-action btn-flat modal-close" onclick="submit()">Submit</a>
 </div>
