@@ -19,19 +19,23 @@ from jinja2 import Environment, FileSystemLoader
 from python.dog_sighting import DogSighting
 
 class BaseHandler(webapp2.RequestHandler):
+
+    APIKEY = "AIzaSyDPcGinCZer-N5pKXSy98ICF6jmmUDCSDY"
+
     def get(self):
         dogs = DogSighting.list_all()
-        self.render_response("templates/static.html", dogs=dogs)
+        self.render_response("templates/static.html", dogs=dogs, APIkey=self.APIKEY)
 
     def post(self):
         form_data = dict(self.request.POST)
         picture = self.request.POST.multi["picture"].file.read()
-        print form_data
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(dict())
-        DogSighting.new(None, None, picture, form_data.get("breed"),
+
+        DogSighting.new(form_data.get("lat"), form_data.get("lon"), picture, form_data.get("breed"),
                         form_data.get("size"), None, form_data.get("description"),
                         int(form_data.get("rating")))
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(dict())
 
     def render_response(self, template, **kwargs): #kwarg = keyword argument, could also pass page_title="" as argument
         env = Environment(
@@ -42,6 +46,17 @@ class BaseHandler(webapp2.RequestHandler):
         template = env.get_template(template)
         self.response.headers['Content-Type'] = 'text/html'
         self.response.write(template.render(kwargs))
+
+
+class GetDogsHandler(webapp2.RequestHandler):
+    def get(self):
+        dogs = DogSighting.list_all()
+        dict_dogs = [ndb_dog.to_dict() for ndb_dog in dogs] #list comprehension
+        for dog in dict_dogs:
+            dog.pop("picture") #removes picture from dictionary
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(dict_dogs)
+
 
 # class AboutHandler(BaseHandler):
 #     def get(self):
@@ -64,6 +79,6 @@ class BaseHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-    ('/', BaseHandler),
+    ('/', BaseHandler), ('/getDogs', GetDogsHandler)
 
 ], debug = True)

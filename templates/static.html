@@ -28,7 +28,6 @@
 
         function submit(){
 
-
             var form = $("#dogSubmissionForm").serializeArray();
             var formData = new FormData();
             var file = document.getElementById("picture").files[0];
@@ -38,14 +37,31 @@
             }
             console.log(formData.values());
 
-            $.ajax({
-                url:"/",
-                type:"post",
-                data:formData,
-                cache:false,
-                contentType:false,
-                processData:false
-            })
+            function geoSuccess(position) {
+                formData.append("lon", position.coords.longitude);
+                formData.append("lat", position.coords.latitude);
+
+                $.ajax({
+                    url:"/",
+                    type:"post",
+                    data:formData,
+                    cache:false,
+                    contentType:false,
+                    processData:false
+                })
+            }
+
+            function geoError(error){
+                console.log(error);
+            }
+
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+
+            navigator.geolocation.getCurrentPosition(geoSuccess, geoError, options);
 
 
         }

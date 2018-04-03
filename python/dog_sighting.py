@@ -10,7 +10,8 @@ class DogSighting(ndb.Model):
 
     sighting_id = ndb.StringProperty(required = True)
     date_time = ndb.DateTimeProperty()
-    location = ndb.GeoPtProperty()
+    lat = ndb.FloatProperty()
+    lon = ndb.FloatProperty()
     picture = ndb.BlobProperty()
     breed = ndb.StringProperty()
     size = ndb.StringProperty()
@@ -29,7 +30,8 @@ class DogSighting(ndb.Model):
         sighting.sighting_id = uuid.uuid4().hex
         sighting.key = cls.build_key(sighting.sighting_id)
         if lat and lon:
-            sighting.location = ndb.GeoPt(lat, lon)
+            sighting.lat = lat
+            sighting.lon = lon
         if picture:
             picture = images.resize(picture, 200, 200)
             sighting.picture = picture
@@ -44,5 +46,5 @@ class DogSighting(ndb.Model):
 
     @classmethod
     def list_all(cls):
-        query = DogSighting.query().fetch(10)
-        return query
+        results = DogSighting.query().fetch(10)
+        return results
