@@ -1,3 +1,39 @@
-{% for dog in dogs %}
+<script>
+function successCallback(dogs) {
+    var dogDiv = document.getElementById('myDogs');
+    var dogInfo = `<div class="row"> `;
+    for (var i = 0; i < dogs.length; i++) {
+            var dog = dogs[i];
+            dogInfo += `
+            <div class="col s12 m6 l4">
+            <div class="card ">
+            <div class="card-image waves-effect waves-block waves-light">
+            <img class="activator" src="/img/?sighting_id=${dog.sighting_id}">
+            </div>
+            <div class="card-content">
+            <span class="card-title activator grey-text text-darken-4">${dog.title}<i class="material-icons right">more_vert</i></span>
+            </div>
+            <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">${dog.title}<i class="material-icons right">close</i></span>
+            <p>${dog.notes}</p>
+            <p>Rating: ${dog.rating}</p>
+            <p>Size: ${dog.size}</p>
+            <p>Breed: ${dog.breed}</p>
+            </div>
+            </div>
+            </div>`
+    }
 
-{% endfor %}
+    dogInfo += `</div>`;
+    dogDiv.innerHTML += dogInfo;
+}
+
+$.ajax({
+    'url': '/getDogs',
+    'type': 'get'
+}).done(function (dogs) {
+    successCallback(dogs);
+}).fail(function (error) {
+    console.log(error);
+})
+</script>

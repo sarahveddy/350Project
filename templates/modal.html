@@ -52,25 +52,25 @@
             <div class="col s6">
                 <p>
                     <label>
-                        <input name="dog_size" value="tiny" type="radio" checked />
+                        <input name="size" value="tiny" type="radio" checked />
                         <span>Tiny</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="dog_size" value="small" type="radio" />
+                        <input name="size" value="small" type="radio" />
                         <span>Small</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="dog_size" value="medium" type="radio" />
+                        <input name="size" value="medium" type="radio" />
                         <span>Medium</span>
                     </label>
                 </p>
                 <p>
                     <label>
-                        <input name="dog_size" value="large" type="radio"  />
+                        <input name="size" value="large" type="radio"  />
                         <span>Large</span>
                     </label>
                 </p>
@@ -129,7 +129,12 @@
     </form>
 </div>
 
+
 <!--Modal footer-->
-<div class="modal-footer">
-    <a class="modal-action btn-flat modal-close" onclick="submit()">Submit</a>
+<div class="modal-footer ">
+    <div id="progressBar" class="progress ">
+        <div class="indeterminate"></div>
+    </div>
+    <a class="modal-action btn-flat " onclick="submit()">Submit</a>
+
 </div>

@@ -27,7 +27,8 @@
         }
 
         function submit(){
-
+            var progress = document.getElementById("progressBar");
+            progress.style.display = "inline-block";
             var form = $("#dogSubmissionForm").serializeArray();
             var formData = new FormData();
             var file = document.getElementById("picture").files[0];
@@ -38,6 +39,7 @@
             console.log(formData.values());
 
             function geoSuccess(position) {
+
                 formData.append("lon", position.coords.longitude);
                 formData.append("lat", position.coords.latitude);
 
@@ -48,20 +50,43 @@
                     cache:false,
                     contentType:false,
                     processData:false
-                })
+                }).done(
+                    function(){
+                        progress.style.display = "none";
+                        var modal = document.querySelector(".modal");
+                        var instance = M.Modal.getInstance(modal);
+                        instance.close();
+                    }
+                ).fail(
+                    function(error){
+                        progress.style.display = "none";
+                        var modal = document.querySelector(".modal");
+                        var instance = M.Modal.getInstance(modal);
+                        instance.close();
+                        M.toast({html:"Unable to submit."});
+                    }
+                )
+
             }
 
             function geoError(error){
                 console.log(error);
+                progress.style.display = "none";
+                var modal = document.querySelector(".modal");
+                var instance = M.Modal.getInstance(modal);
+                instance.close();
+                M.toast({html:"Unable to submit."});
+
             }
 
             var options = {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
+                enableHighAccuracy: false,
+                timeout: 10000,
+                maximumAge: 30000
             };
 
-            navigator.geolocation.getCurrentPosition(geoSuccess, geoError, options);
+           navigator.geolocation.getCurrentPosition(geoSuccess, geoError, options);
+            //geoSuccess({coords:{latitude:1, longitude:1}})
 
 
         }
@@ -73,32 +98,38 @@
 </head>
 
 <body>
-    <header>
-        <nav>
-            <div class="nav-wrapper red lighten-2">
-                <a href="#" class="brand-logo">DOG TRACKS</a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a onclick="navigateTo('myDogs')">My Dogs</a></li>
-                    <li><a onclick="navigateTo('map')">Dog Map</a></li>
-                    <li><a onclick="navigateTo('profile')">Profile</a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+<header>
+    <nav>
+        <div class="nav-wrapper red lighten-2">
+            <a href="#" class="brand-logo">DOG TRACKS</a>
+            <a href="#" data-target="side-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a onclick="navigateTo('map')">Dog Map</a></li>
+                <li><a onclick="navigateTo('myDogs')">All Dogs</a></li>
+                <!--<li><a onclick="navigateTo('profile')">Profile</a></li>-->
+            </ul>
+        </div>
+    </nav>
+    <ul class="sidenav" id="side-nav">
+        <li><a onclick="navigateTo('map')">Dog Map</a></li>
+        <li><a onclick="navigateTo('myDogs')">All Dogs</a></li>
+        <!--<li><a onclick="navigateTo('profile')">Profile</a></li>-->
+    </ul>
+</header>
 
 
     <main>
-        <div class="page visible" id="myDogs">
+        <div class="page" id="myDogs">
             {% include 'templates/myDogs.html' %}
         </div>
 
-        <div class="page" id="map">
+        <div class="page visible" id="map">
             {% include 'templates/map.html' %}
         </div>
 
-        <div class="page" id="profile">
-            {% include 'templates/profile.html' %}
-        </div>
+        <!--<div class="page" id="profile">-->
+            <!--{% include 'templates/profile.html' %}-->
+        <!--</div>-->
     </main>
 
     <button data-target="popup" class="btn-floating btn-large waves-effect waves-light red lighten-2 addButton modal-trigger">
@@ -112,6 +143,9 @@
         <!--must run after modal is loaded-->
         var modal = document.querySelector(".modal");
         M.Modal.init(modal);
+        var nav = document.querySelector('.sidenav');
+        var instance = M.Sidenav.init(nav);
+
     </script>
 
 

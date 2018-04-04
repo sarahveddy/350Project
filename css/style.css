@@ -25,3 +25,21 @@ main {
 	right: 20px;
 	position: absolute;
 }
+
+.progress {
+	display: none;
+	flex-grow: 1;
+
+}
+.modal-footer{
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+
+}
+
+.modal-action{
+	flex-shrink: 0;
+}
+
+

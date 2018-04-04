@@ -9,6 +9,7 @@ from google.appengine.api import images
 class DogSighting(ndb.Model):
 
     sighting_id = ndb.StringProperty(required = True)
+    title = ndb.StringProperty()
     date_time = ndb.DateTimeProperty()
     lat = ndb.FloatProperty()
     lon = ndb.FloatProperty()
@@ -25,13 +26,13 @@ class DogSighting(ndb.Model):
         return ndb.Key("DogSighting", sighting_id)
 
     @classmethod
-    def new(cls, lat, lon, picture, breed, size, user, notes, rating):
+    def new(cls, lat, lon, picture, breed, size, user, notes, rating, title):
         sighting = cls()
         sighting.sighting_id = uuid.uuid4().hex
         sighting.key = cls.build_key(sighting.sighting_id)
         if lat and lon:
-            sighting.lat = lat
-            sighting.lon = lon
+            sighting.lat = float(lat)
+            sighting.lon = float(lon)
         if picture:
             picture = images.resize(picture, 200, 200)
             sighting.picture = picture
@@ -41,6 +42,7 @@ class DogSighting(ndb.Model):
         sighting.notes = notes
         sighting.rating = rating
         sighting.date_time = datetime.datetime.utcnow()
+        sighting.title = title
         sighting.put()
         return sighting
 

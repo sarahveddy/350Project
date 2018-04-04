@@ -1,10 +1,11 @@
 
 
 <script>
+    var map;
     function initMap() {
         var options = {
             center: {lat:52.139586, lng:-106.6577709},
-            zoom: 6,
+            zoom: 12,
             zoomControlOptions:{
                 position: google.maps.ControlPosition.BOTTOM_LEFT
             },
@@ -12,7 +13,7 @@
                 position: google.maps.ControlPosition.BOTTOM_LEFT
             }
         };
-        var map = new google.maps.Map(document.getElementById("map"), options);
+        map = new google.maps.Map(document.getElementById("map"), options);
 
         function setPosition(position) {
             var pos = {
@@ -23,6 +24,35 @@
         }
 
         navigator.geolocation.getCurrentPosition(setPosition);
+
+        function successCallback(dogs) {
+
+            for (var i = 0; i < dogs.length; i++) {
+                var dog = dogs[i];
+                var dogPos = {lat: dog.lat, lng: dog.lon};
+                var popUpContent = '<img src="/img/?sighting_id=' + dog.sighting_id + '">'
+                const infowindow = new google.maps.InfoWindow({
+                    content: popUpContent
+                });
+                const marker = new google.maps.Marker({
+                    position: dogPos,
+                    map: map,
+                    title: dog.title || "no title"
+                })
+                marker.addListener("click", function () {
+                    infowindow.open(map, marker);
+                })
+            }
+        }
+
+        $.ajax({
+            'url': '/getDogs',
+            'type': 'get'
+        }).done(function (dogs) {
+            successCallback(dogs);
+        }).fail(function (error) {
+            console.log(error);
+        })
 
     }
 </script>

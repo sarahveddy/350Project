@@ -15,6 +15,9 @@
 import os
 import webapp2
 import json
+
+from google.appengine.api import images
+
 from jinja2 import Environment, FileSystemLoader
 from python.dog_sighting import DogSighting
 
@@ -29,13 +32,19 @@ class BaseHandler(webapp2.RequestHandler):
     def post(self):
         form_data = dict(self.request.POST)
         picture = self.request.POST.multi["picture"].file.read()
-
-        DogSighting.new(form_data.get("lat"), form_data.get("lon"), picture, form_data.get("breed"),
+        cropped_picture = self._crop_image(picture)
+        DogSighting.new(form_data.get("lat"), form_data.get("lon"), cropped_picture, form_data.get("dog_breed"),
                         form_data.get("size"), None, form_data.get("description"),
-                        int(form_data.get("rating")))
+                        int(form_data.get("rating")), form_data.get("picture_title"))
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(dict())
+
+    def _crop_image(self, picture):
+        img = images.Image(picture)
+        smallest = min(img.width, img.height)
+        new_img = images.resize(picture, smallest, smallest, crop_to_fit=True)
+        return new_img
 
     def render_response(self, template, **kwargs): #kwarg = keyword argument, could also pass page_title="" as argument
         env = Environment(
@@ -55,7 +64,22 @@ class GetDogsHandler(webapp2.RequestHandler):
         for dog in dict_dogs:
             dog.pop("picture") #removes picture from dictionary
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(dict_dogs)
+        self.response.out.write(json.dumps(dict_dogs, default=str))
+        print "*********"
+        print dict_dogs
+
+
+
+
+class ImageHandler(webapp2.RedirectHandler):
+    def get(self):
+        dog = DogSighting.build_key(self.request.get('sighting_id')).get()
+        if dog.picture:
+            self.response.headers['Content-Type'] = 'image/png'
+            self.response.out.write(dog.picture)
+        else:
+            self.response.out.write("no image")
+
 
 
 # class AboutHandler(BaseHandler):
@@ -79,6 +103,6 @@ class GetDogsHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-    ('/', BaseHandler), ('/getDogs', GetDogsHandler)
+    ('/', BaseHandler), ('/getDogs', GetDogsHandler), ('/img/', ImageHandler)
 
 ], debug = True)
