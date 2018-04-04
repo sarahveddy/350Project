@@ -43,6 +43,7 @@
                 formData.append("lon", position.coords.longitude);
                 formData.append("lat", position.coords.latitude);
 
+
                 $.ajax({
                     url:"/",
                     type:"post",
@@ -86,7 +87,7 @@
             };
 
            navigator.geolocation.getCurrentPosition(geoSuccess, geoError, options);
-            //geoSuccess({coords:{latitude:1, longitude:1}})
+           // geoSuccess({coords:{latitude:1, longitude:1}})
 
 
         }
